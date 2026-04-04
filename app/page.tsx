@@ -1,4 +1,12 @@
-const projects = [
+type Project = {
+  tag: string;
+  title: string;
+  description: string;
+  chips: readonly string[];
+  featured?: boolean;
+};
+
+const projects: readonly Project[] = [
   {
     tag: "Brand site",
     title: "Northstar Studio",
@@ -20,9 +28,14 @@ const projects = [
     description: "A personal showcase with a cleaner grid, better spacing, and a more memorable first screen.",
     chips: ["Content", "Motion", "Responsive"],
   },
-] as const;
+];
 
-const services = [
+type Service = {
+  title: string;
+  description: string;
+};
+
+const services: readonly Service[] = [
   {
     title: "Visual direction",
     description: "Layout systems, typography choices, color direction, and page structure that feels deliberate.",
@@ -35,14 +48,20 @@ const services = [
     title: "Content framing",
     description: "Hero messaging, project summaries, and a better narrative for who you are and what you do.",
   },
-] as const;
+];
 
-const contactLinks = [
+type ContactLink = {
+  label: string;
+  href: string;
+  text: string;
+};
+
+const contactLinks: readonly ContactLink[] = [
   { label: "Email", href: "mailto:hello@yourdomain.com", text: "hello@yourdomain.com" },
   { label: "LinkedIn", href: "https://www.linkedin.com", text: "LinkedIn" },
   { label: "GitHub", href: "https://github.com", text: "GitHub" },
   { label: "Instagram", href: "https://www.instagram.com", text: "Instagram" },
-] as const;
+];
 
 export default function HomePage() {
   return (
