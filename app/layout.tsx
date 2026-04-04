@@ -1,21 +1,10 @@
-import { Manrope, Space_Grotesk } from "next/font/google";
 import type { Metadata } from "next";
 import "./globals.css";
 import type { ReactNode } from "react";
 
-const manrope = Manrope({
-  subsets: ["latin"],
-  variable: "--font-body",
-});
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-heading",
-});
-
 export const metadata: Metadata = {
-  title: "Your Name | Portfolio",
-  description: "A clean personal portfolio website for selected work, services, and contact details.",
+  title: "Brittany Chiang",
+  description: "A portfolio-inspired single-page site with calm hierarchy, focused copy, and strong accessibility.",
 };
 
 export default function RootLayout({
@@ -24,7 +13,7 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${manrope.variable} ${spaceGrotesk.variable}`}>
+    <html lang="en">
       <body>{children}</body>
     </html>
   );
