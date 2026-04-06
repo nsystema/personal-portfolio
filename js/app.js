@@ -393,9 +393,16 @@
                 el('span', { className: 'footer__status animate-pulse', textContent: 'STATUS: 200 OK' }),
             ]),
             el('div', { className: 'footer__links' },
-                profile.footerLinks.map(link =>
-                    el('a', { className: 'footer__link', href: link.href, textContent: link.label })
-                )
+                profile.footerLinks.map(link => {
+                    const aOpts = { className: 'footer__link', href: link.href };
+                    if (link.icon) {
+                        aOpts.innerHTML = link.icon;
+                        aOpts['aria-label'] = link.label;
+                    } else {
+                        aOpts.textContent = link.label;
+                    }
+                    return el('a', aOpts);
+                })
             ),
         ]);
 
