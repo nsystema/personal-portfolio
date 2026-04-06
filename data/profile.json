@@ -1,19 +1,44 @@
 {
-    "name": "ALEX\nRIVERA",
+    "name": "AHMED \n N. ACHICHE",
     "initTag": "// INITIALIZING_PERSONA",
-    "level": "SENIOR ARCHITECT",
-    "location": "BERLIN_DE",
+    "level": "AI ENGINEER",
+    "location": "LAUSANNE_CH",
     "navTitle": "TERMINAL_CV_V1.0",
     "navLinks": [
-        { "label": "INDEX", "href": "#", "active": true },
-        { "label": "STACK", "href": "#", "active": false },
-        { "label": "HISTORY", "href": "#", "active": false },
-        { "label": "SOURCE", "href": "#", "active": false }
+        {
+            "label": "INDEX",
+            "href": "#",
+            "active": true
+        },
+        {
+            "label": "STACK",
+            "href": "#",
+            "active": false
+        },
+        {
+            "label": "HISTORY",
+            "href": "#",
+            "active": false
+        },
+        {
+            "label": "SOURCE",
+            "href": "#",
+            "active": false
+        }
     ],
     "footerCopyright": "© 2024 TERMINAL_ELEGANCE. v1.0.4",
     "footerLinks": [
-        { "label": "GITHUB", "href": "#" },
-        { "label": "LINKEDIN", "href": "#" },
-        { "label": "TELEGRAM", "href": "#" }
+        {
+            "label": "GITHUB",
+            "href": "#"
+        },
+        {
+            "label": "LINKEDIN",
+            "href": "#"
+        },
+        {
+            "label": "TELEGRAM",
+            "href": "#"
+        }
     ]
 }
