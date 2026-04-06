@@ -41,6 +41,22 @@
         return node;
     }
 
+    async function typeText(node, text, speed = 40, preDelay = 0, clear = true) {
+        if (preDelay) await new Promise(r => setTimeout(r, preDelay));
+        if (clear) node.innerHTML = '';
+        const chars = text.split('');
+        for (let i = 0; i < chars.length; i++) {
+            if (chars[i] === '\n') {
+                node.appendChild(document.createElement('br'));
+            } else {
+                node.appendChild(document.createTextNode(chars[i]));
+            }
+            // Add slight jitter for realistic terminal typing feel
+            const jitter = Math.random() * (speed * 0.5);
+            await new Promise(r => setTimeout(r, speed + jitter));
+        }
+    }
+
     // ── Nav ───────────────────────────────────────────────────────────────
     function renderNav() {
         const navEl = document.getElementById('nav');
@@ -69,24 +85,103 @@
     // ── Hero ──────────────────────────────────────────────────────────────
     function renderHero() {
         const heroEl = document.getElementById('hero');
-        const nameLines = profile.name.split('\n');
+
+        const tagEl = el('p', { className: 'hero__tag' });
+        const nameEl = el('h1', { className: 'hero__name' });
+        
+        const metaLevelEl = el('span', { className: 'hero__meta-text' });
+        const divider = el('span', { className: 'hero__meta-divider', style: { opacity: '0' } });
+        const metaLocEl = el('span', { className: 'hero__meta-text' });
 
         const content = el('div', { className: 'section__content' }, [
-            el('p', { className: 'hero__tag hero--init-tag', textContent: profile.initTag }),
-            el('h1', {
-                className: 'hero__name blinking-cursor hero--init-name',
-                innerHTML: nameLines.join('<br />'),
-            }),
-            el('div', { className: 'hero__meta hero--init-meta' }, [
-                el('span', { className: 'hero__meta-text', textContent: `LEVEL: ${profile.level}` }),
-                el('span', { className: 'hero__meta-divider' }),
-                el('span', { className: 'hero__meta-text', textContent: `LOC: ${profile.location}` }),
+            tagEl,
+            nameEl,
+            el('div', { className: 'hero__meta' }, [
+                metaLevelEl,
+                divider,
+                metaLocEl,
             ]),
         ]);
 
         const gutter = el('div', { className: 'section__gutter hero--init-gutter', innerHTML: '000<br />001<br />002' });
 
         heroEl.appendChild(el('div', { className: 'section__row' }, [gutter, content]));
+
+        return { tagEl, nameEl, metaLevelEl, metaLocEl, divider };
+    }
+
+    // ── Boot Sequence (Typing Animation) ──────────────────────────────────
+    async function animateBootSequence(heroEls) {
+        document.body.classList.add('is-booting');
+        
+        const noMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const { tagEl, nameEl, metaLevelEl, metaLocEl, divider } = heroEls;
+
+        if (noMotion) {
+            tagEl.textContent = profile.initTag;
+            nameEl.innerHTML = profile.name.split('\n').join('<br />');
+            metaLevelEl.textContent = `LEVEL: ${profile.level}`;
+            metaLocEl.textContent = `LOC: ${profile.location}`;
+            divider.style.opacity = '1';
+            nameEl.classList.add('blinking-cursor');
+            
+            document.body.classList.remove('is-booting');
+            initScrollReveal();
+            return;
+        }
+
+        // --- Terminal Simulation ---
+        tagEl.classList.add('blinking-cursor');
+        await typeText(tagEl, "> INITIALIZING PERSONA", 25, 200);
+        
+        // Blinking dots
+        for (let i = 0; i < 3; i++) {
+            await new Promise(r => setTimeout(r, 450));
+            tagEl.appendChild(document.createTextNode("."));
+        }
+        
+        await new Promise(r => setTimeout(r, 400));
+        tagEl.appendChild(document.createElement('br'));
+        await typeText(tagEl, "> MODULES LOADED.", 25, 0, false); // false = don't clear
+        tagEl.appendChild(document.createElement('br'));
+        await typeText(tagEl, "> HANDSHAKE ACCEPTED.", 25, 0, false);
+        
+        await new Promise(r => setTimeout(r, 700));
+        tagEl.innerHTML = "";
+        tagEl.classList.remove('blinking-cursor');
+
+        // --- Actual Hero Boot ---
+
+        // 1. Type system tag
+        tagEl.classList.add('blinking-cursor');
+        await typeText(tagEl, profile.initTag, 30, 100);
+        tagEl.classList.remove('blinking-cursor');
+
+        // 2. Type main name
+        nameEl.classList.add('blinking-cursor');
+        await typeText(nameEl, profile.name, 45, 100);
+        nameEl.classList.remove('blinking-cursor');
+
+        // 3. Type Level
+        metaLevelEl.classList.add('blinking-cursor');
+        await typeText(metaLevelEl, `LEVEL: ${profile.level}`, 30, 200);
+        metaLevelEl.classList.remove('blinking-cursor');
+
+        // Show divider line instantly
+        divider.style.transition = 'opacity 0.3s ease';
+        divider.style.opacity = '1';
+
+        // 4. Type Location
+        metaLocEl.classList.add('blinking-cursor');
+        await typeText(metaLocEl, `LOC: ${profile.location}`, 30, 100);
+        metaLocEl.classList.remove('blinking-cursor');
+
+        // Leave cursor permanently on the name to act as standard blinking prompt
+        nameEl.classList.add('blinking-cursor');
+
+        // Unlock page
+        document.body.classList.remove('is-booting');
+        initScrollReveal();
     }
 
     // ── Experience ────────────────────────────────────────────────────────
@@ -124,8 +219,8 @@
         const timeline = el('div', { className: 'timeline' }, items);
 
         const header = el('div', { className: 'section-header reveal' }, [
-            el('span', { className: 'section-header__tag', textContent: '<!-- 01_EXPERIENCE -->' }),
-            el('h2', { className: 'section-header__title', textContent: 'Professional History' }),
+            el('span', { className: 'section-header__tag type-target', 'data-type': '<!-- 01_EXPERIENCE -->' }),
+            el('h2', { className: 'section-header__title type-target', 'data-type': 'Professional History' }),
         ]);
 
         const content = el('div', { className: 'section__content' }, [
@@ -166,8 +261,8 @@
         });
 
         const header = el('div', { className: 'section-header reveal' }, [
-            el('span', { className: 'section-header__tag', textContent: '<!-- 02_PROJECTS -->' }),
-            el('h2', { className: 'section-header__title', textContent: 'Technical Repositories' }),
+            el('span', { className: 'section-header__tag type-target', 'data-type': '<!-- 02_PROJECTS -->' }),
+            el('h2', { className: 'section-header__title type-target', 'data-type': 'Technical Repositories' }),
         ]);
 
         const content = el('div', { className: 'section__content' }, [
@@ -217,8 +312,8 @@
         });
 
         const header = el('div', { className: 'section-header reveal' }, [
-            el('span', { className: 'section-header__tag', textContent: '<!-- 03_SKILLS -->' }),
-            el('h2', { className: 'section-header__title', textContent: 'Technical Stack' }),
+            el('span', { className: 'section-header__tag type-target', 'data-type': '<!-- 03_SKILLS -->' }),
+            el('h2', { className: 'section-header__title type-target', 'data-type': 'Technical Stack' }),
         ]);
 
         const content = el('div', { className: 'section__content' }, [
@@ -244,8 +339,8 @@
         });
 
         const header = el('div', { className: 'section-header reveal' }, [
-            el('span', { className: 'section-header__tag', textContent: '<!-- 04_CONTACT -->' }),
-            el('h2', { className: 'section-header__title', textContent: 'Establish Uplink' }),
+            el('span', { className: 'section-header__tag type-target', 'data-type': '<!-- 04_CONTACT -->' }),
+            el('h2', { className: 'section-header__title type-target', 'data-type': 'Establish Uplink' }),
         ]);
 
         const content = el('div', { className: 'section__content' }, [
@@ -296,12 +391,15 @@
 
     // ── Scroll-Reveal Observer ────────────────────────────────────────────
     function initScrollReveal() {
+        const noMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         // Skip if reduced-motion is preferred
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        if (noMotion) {
             document.querySelectorAll('.reveal').forEach(el => el.classList.add('reveal--visible'));
-            // Still animate skill bars immediately
             document.querySelectorAll('.skill__bar-fill[data-width]').forEach(bar => {
                 bar.style.width = bar.dataset.width;
+            });
+            document.querySelectorAll('.type-target').forEach(el => {
+                el.textContent = el.dataset.type;
             });
             return;
         }
@@ -310,6 +408,22 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('reveal--visible');
+
+                    // Fire sequential typing for target headers if untyped
+                    if (!entry.target.dataset.typingActive) {
+                        entry.target.dataset.typingActive = 'true';
+                        
+                        const targets = Array.from(entry.target.querySelectorAll('.type-target'));
+                        if (targets.length > 0) {
+                            (async () => {
+                                for (let el of targets) {
+                                    el.classList.add('blinking-cursor');
+                                    await typeText(el, el.dataset.type, 20);
+                                    el.classList.remove('blinking-cursor');
+                                }
+                            })();
+                        }
+                    }
 
                     // Animate skill bars inside this element
                     const bars = entry.target.querySelectorAll('.skill__bar-fill[data-width]');
@@ -369,15 +483,15 @@
 
     // ── Render All ────────────────────────────────────────────────────────
     renderNav();
-    renderHero();
+    const heroEls = renderHero();
     renderExperience();
     renderProjects();
     renderSkills();
     renderContact();
     renderFooter();
 
-    // Kick off interaction systems after rendering
-    initScrollReveal();
+    // Kick off mouse glow immediately, but delay scroll reveals through the boot sequence
     initMouseGlow();
+    animateBootSequence(heroEls);
 
 })();
