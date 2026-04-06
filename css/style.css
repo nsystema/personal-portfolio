@@ -344,18 +344,22 @@ body.is-booting #footer {
     position: fixed;
     top: 0;
     left: 0;
-    width: 1000px;
-    height: 1000px;
+    --mouse-glow-size: 700px;
+    width: var(--mouse-glow-size);
+    height: var(--mouse-glow-size);
     border-radius: 50%;
     pointer-events: none;
     z-index: 40; /* Sits over content, under nav */
     background: radial-gradient(
-        circle,
+        circle at center,
         rgba(255, 181, 158, 0.07) 0%,
-        rgba(255, 181, 158, 0.02) 40%,
+        rgba(255, 181, 158, 0.02) 35%,
         transparent 70%
     );
-    transform: translate(calc(var(--mouse-x, -1000px) - 500px), calc(var(--mouse-y, -1000px) - 500px));
+    transform: translate(
+        calc(var(--mouse-x, -1000px) - (var(--mouse-glow-size) * 0.5)),
+        calc(var(--mouse-y, -1000px) - (var(--mouse-glow-size) * 0.5))
+    );
     will-change: transform;
     opacity: 0;
     transition: opacity 0.5s ease;
@@ -363,6 +367,55 @@ body.is-booting #footer {
 
 body.mouse-in .mouse-glow {
     opacity: 1;
+}
+
+/* Extra soft halo for spotlight */
+.mouse-glow::after {
+    content: '';
+    position: absolute;
+    inset: -35%;
+    background: radial-gradient(
+        circle at center,
+        rgba(255, 181, 158, 0.05) 0%,
+        rgba(255, 181, 158, 0.015) 45%,
+        transparent 78%
+    );
+    filter: blur(26px);
+    opacity: 0.22;
+    pointer-events: none;
+}
+
+/* --- Hero-only: Claude Code icon hint --- */
+body.glow-hero .mouse-glow {
+    --mouse-glow-size: 460px;
+    border-radius: 0;
+    background: radial-gradient(
+        circle at center,
+        rgba(255, 181, 158, 0.032) 0%,
+        rgba(255, 181, 158, 0.012) 30%,
+        transparent 62%
+    );
+
+    -webkit-mask-image: url('../assets/Claude_code_asset-812a9772-6631-48fc-aae3-8961bdcfb220.png');
+    mask-image: url('../assets/Claude_code_asset-812a9772-6631-48fc-aae3-8961bdcfb220.png');
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+}
+
+body.glow-hero .mouse-glow::after {
+    inset: -105%;
+    background: radial-gradient(
+        circle at center,
+        rgba(255, 181, 158, 0.055) 0%,
+        rgba(255, 181, 158, 0.018) 45%,
+        transparent 88%
+    );
+    filter: blur(64px);
+    opacity: 0.32;
 }
 
 /* ---------- Transitions ---------- */

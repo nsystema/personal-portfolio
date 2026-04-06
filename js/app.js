@@ -57,6 +57,17 @@
         }
     }
 
+    // Remember last mouse position so we can re-evaluate glow mode after boot.
+    let lastMouseX = null;
+    let lastMouseY = null;
+
+    function updateGlowHeroFromPointer() {
+        if (lastMouseX === null || lastMouseY === null) return;
+        const hovered = document.elementFromPoint(lastMouseX, lastMouseY);
+        const inHero = Boolean(hovered && hovered.closest && hovered.closest('#hero'));
+        document.body.classList.toggle('glow-hero', inHero);
+    }
+
     // ── Nav ───────────────────────────────────────────────────────────────
     function renderNav() {
         const navEl = document.getElementById('nav');
@@ -113,6 +124,7 @@
     // ── Boot Sequence (Typing Animation) ──────────────────────────────────
     async function animateBootSequence(heroEls) {
         document.body.classList.add('is-booting');
+        document.body.classList.add('glow-hero');
         
         const noMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         const { tagEl, nameEl, metaLevelEl, metaLocEl, divider } = heroEls;
@@ -126,6 +138,7 @@
             nameEl.classList.add('blinking-cursor');
             
             document.body.classList.remove('is-booting');
+            updateGlowHeroFromPointer();
             initScrollReveal();
             return;
         }
@@ -181,6 +194,7 @@
 
         // Unlock page
         document.body.classList.remove('is-booting');
+        updateGlowHeroFromPointer();
         initScrollReveal();
     }
 
@@ -465,6 +479,17 @@
             if (!document.body.classList.contains('mouse-in')) {
                 document.body.classList.add('mouse-in');
             }
+
+            // Switch glow mode based on hovered section:
+            // - Hero: Claude Code icon hint
+            // - Elsewhere: regular circular spotlight
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
+            const hovered = document.elementFromPoint(e.clientX, e.clientY);
+            const inHero =
+                document.body.classList.contains('is-booting') ||
+                Boolean(hovered && hovered.closest && hovered.closest('#hero'));
+            document.body.classList.toggle('glow-hero', inHero);
             
             // Batch style updates to the next animation frame for smoothness
             if (rafId) cancelAnimationFrame(rafId);
@@ -476,6 +501,7 @@
 
         document.addEventListener('mouseleave', () => {
             document.body.classList.remove('mouse-in');
+            document.body.classList.remove('glow-hero');
         });
     }
 
