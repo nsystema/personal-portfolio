@@ -322,6 +322,33 @@ ul {
     font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
 
+/* ---------- Global Mouse Spotlight ---------- */
+
+.mouse-glow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 1000px;
+    height: 1000px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 40; /* Sits over content, under nav */
+    background: radial-gradient(
+        circle,
+        rgba(255, 181, 158, 0.07) 0%,
+        rgba(255, 181, 158, 0.02) 40%,
+        transparent 70%
+    );
+    transform: translate(calc(var(--mouse-x, -1000px) - 500px), calc(var(--mouse-y, -1000px) - 500px));
+    will-change: transform;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+body.mouse-in .mouse-glow {
+    opacity: 1;
+}
+
 /* ---------- Transitions ---------- */
 
 .transition-colors {

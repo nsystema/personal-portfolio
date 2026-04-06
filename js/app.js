@@ -343,6 +343,30 @@
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     }
 
+    // ── Mouse Glow Spotlight ──────────────────────────────────────────────
+    function initMouseGlow() {
+        const glow = el('div', { className: 'mouse-glow' });
+        document.body.appendChild(glow);
+
+        let rafId;
+        document.addEventListener('mousemove', (e) => {
+            if (!document.body.classList.contains('mouse-in')) {
+                document.body.classList.add('mouse-in');
+            }
+            
+            // Batch style updates to the next animation frame for smoothness
+            if (rafId) cancelAnimationFrame(rafId);
+            rafId = requestAnimationFrame(() => {
+                glow.style.setProperty('--mouse-x', `${e.clientX}px`);
+                glow.style.setProperty('--mouse-y', `${e.clientY}px`);
+            });
+        }, { passive: true });
+
+        document.addEventListener('mouseleave', () => {
+            document.body.classList.remove('mouse-in');
+        });
+    }
+
     // ── Render All ────────────────────────────────────────────────────────
     renderNav();
     renderHero();
@@ -352,7 +376,8 @@
     renderContact();
     renderFooter();
 
-    // Kick off scroll reveals after rendering
+    // Kick off interaction systems after rendering
     initScrollReveal();
+    initMouseGlow();
 
 })();
