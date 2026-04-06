@@ -391,7 +391,6 @@
             el('div', { className: 'footer__copyright' }, [
                 document.createTextNode(`${profile.footerCopyright} - `),
                 el('span', { className: 'footer__status animate-pulse', textContent: 'STATUS: 200 OK' }),
-                document.createTextNode(' - PING: 24ms'),
             ]),
             el('div', { className: 'footer__links' },
                 profile.footerLinks.map(link =>

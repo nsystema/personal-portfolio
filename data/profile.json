@@ -3,7 +3,7 @@
     "initTag": "// INITIALIZING_PERSONA",
     "level": "AI ENGINEER",
     "location": "LAUSANNE_CH",
-    "navTitle": "TERMINAL_CV_V1.0",
+    "navTitle": "TERMINAL_CV_",
     "navLinks": [
         {
             "label": "EXPERIENCE",
@@ -26,7 +26,7 @@
             "active": false
         }
     ],
-    "footerCopyright": "© 2024 TERMINAL_ELEGANCE. v1.0.4",
+    "footerCopyright": "© 2026 nsystema",
     "footerLinks": [
         {
             "label": "GITHUB",
