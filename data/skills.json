@@ -1,0 +1,26 @@
+[
+    {
+        "category": "BACKEND.SYS",
+        "colorClass": "accent-primary",
+        "items": [
+            { "name": "Rust_Lang", "level": 95 },
+            { "name": "Go_Engine", "level": 88 }
+        ]
+    },
+    {
+        "category": "INFRA.CORE",
+        "colorClass": "accent-secondary",
+        "items": [
+            { "name": "AWS_Cloud", "level": 92 },
+            { "name": "Docker_K8s", "level": 90 }
+        ]
+    },
+    {
+        "category": "DESIGN.UI",
+        "colorClass": "accent-tertiary",
+        "items": [
+            { "name": "Typography", "level": 85 },
+            { "name": "Figma_Arch", "level": 70 }
+        ]
+    }
+]

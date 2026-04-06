@@ -1,0 +1,20 @@
+[
+    {
+        "role": "Lead Systems Architect",
+        "date": "2021 — PRESENT",
+        "company": "NEURAL_DYNAMICS",
+        "location": "TOKYO",
+        "description": "Engineering high-throughput distributed systems for autonomous neural networks. Orchestrated the transition from legacy monolithic architecture to a high-performance Rust-based microservices mesh.",
+        "tags": ["Distributed_Systems", "Rust", "Kubernetes"],
+        "current": true
+    },
+    {
+        "role": "Senior Backend Engineer",
+        "date": "2018 — 2021",
+        "company": "CYBER_GRID",
+        "location": "SAN FRANCISCO",
+        "description": "Developed core API infrastructures handling 500k+ concurrent websocket connections. Reduced latency by 40% through custom memory management strategies.",
+        "tags": [],
+        "current": false
+    }
+]

@@ -1,0 +1,13 @@
+{
+    "statusText": "STATUS: 200 OK // PING: 24MS",
+    "description": "Currently accepting selected projects for Q4 2024. Reach out through the secure channels below.",
+    "email": {
+        "text": "> alex@sysarchive.dev",
+        "href": "mailto:alex@sysarchive.dev"
+    },
+    "channels": [
+        { "index": "01", "label": "GITHUB.COM/ALEX_RIVERA", "href": "#" },
+        { "index": "02", "label": "LINKEDIN.COM/IN/ALEX_R", "href": "#" },
+        { "index": "03", "label": "X.COM/TERMINAL_R", "href": "#" }
+    ]
+}

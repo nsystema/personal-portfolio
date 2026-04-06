@@ -1,0 +1,16 @@
+[
+    {
+        "title": "Project_Onyx",
+        "icon": "terminal",
+        "version": "v2.4.0",
+        "description": "A headless CMS optimized for terminal-based content delivery via SSH protocols. Built for extreme speed and low bandwidth.",
+        "stack": ["Go", "GRPC", "BoltDB"]
+    },
+    {
+        "title": "Core_Quant",
+        "icon": "dataset",
+        "version": "v1.0.2",
+        "description": "Real-time financial data visualizer using canvas rendering for 60fps technical analysis on mobile devices.",
+        "stack": ["TypeScript", "WebGL", "Rust"]
+    }
+]
