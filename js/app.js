@@ -479,6 +479,44 @@
         });
     }
 
+    // ── Nav Scroll Spy ────────────────────────────────────────────────────
+    function initNavScrollSpy() {
+        const sections = document.querySelectorAll('.section');
+        const navLinks = document.querySelectorAll('.nav__link');
+
+        function onScroll() {
+            let current = null;
+            // Check if we are at the very bottom of the page
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50) {
+                current = sections[sections.length - 1].id;
+            } else {
+                // Find the section that occupies the largest part of the viewport
+                let maxVisibleArea = 0;
+                sections.forEach(sec => {
+                    const rect = sec.getBoundingClientRect();
+                    const visibleHeight = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+                    if (visibleHeight > maxVisibleArea && visibleHeight > 0) {
+                        maxVisibleArea = visibleHeight;
+                        current = sec.id;
+                    }
+                });
+            }
+
+            if (current) {
+                navLinks.forEach(link => {
+                    link.classList.remove('nav__link--active');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('nav__link--active');
+                    }
+                });
+            }
+        }
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+        // Initial check
+        onScroll();
+    }
+
     // ── Render All ────────────────────────────────────────────────────────
     renderNav();
     const heroEls = renderHero();
@@ -490,6 +528,7 @@
 
     // Kick off mouse glow immediately, but delay scroll reveals through the boot sequence
     initMouseGlow();
+    initNavScrollSpy();
     animateBootSequence(heroEls);
 
 })();

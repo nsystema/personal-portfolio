@@ -6,23 +6,23 @@
     "navTitle": "TERMINAL_CV_V1.0",
     "navLinks": [
         {
-            "label": "INDEX",
-            "href": "#",
-            "active": true
-        },
-        {
-            "label": "STACK",
-            "href": "#",
+            "label": "EXPERIENCE",
+            "href": "#experience",
             "active": false
         },
         {
-            "label": "HISTORY",
-            "href": "#",
+            "label": "PROJECTS",
+            "href": "#projects",
             "active": false
         },
         {
-            "label": "SOURCE",
-            "href": "#",
+            "label": "SKILLS",
+            "href": "#skills",
+            "active": false
+        },
+        {
+            "label": "CONTACT",
+            "href": "#contact",
             "active": false
         }
     ],
