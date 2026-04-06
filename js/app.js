@@ -314,13 +314,25 @@
                     // Animate skill bars inside this element
                     const bars = entry.target.querySelectorAll('.skill__bar-fill[data-width]');
                     bars.forEach((bar, i) => {
-                        setTimeout(() => {
-                            bar.style.width = bar.dataset.width;
-                            bar.classList.add('skill__bar-fill--animate');
+                        const tid = setTimeout(() => {
+                            // Check if still visible before animating
+                            if (entry.target.classList.contains('reveal--visible')) {
+                                bar.style.width = bar.dataset.width;
+                                bar.classList.add('skill__bar-fill--animate');
+                            }
                         }, 200 + i * 80);
+                        bar.dataset.tid = tid;
                     });
+                } else {
+                    entry.target.classList.remove('reveal--visible');
 
-                    observer.unobserve(entry.target);
+                    // Reset skill bars
+                    const bars = entry.target.querySelectorAll('.skill__bar-fill[data-width]');
+                    bars.forEach(bar => {
+                        if (bar.dataset.tid) clearTimeout(Number(bar.dataset.tid));
+                        bar.style.width = '0%';
+                        bar.classList.remove('skill__bar-fill--animate');
+                    });
                 }
             });
         }, {
