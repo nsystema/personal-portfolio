@@ -189,7 +189,7 @@
         const sectionEl = document.getElementById('experience');
 
         const items = experience.map((exp, i) => {
-            const delay = Math.min(i + 1, 8);
+            const delay = Math.min(i + 3, 8);
             const children = [
                 el('div', {
                     className: `timeline__dot ${exp.current ? 'timeline__dot--current' : 'timeline__dot--past'}`,
@@ -239,7 +239,7 @@
         const sectionEl = document.getElementById('projects');
 
         const cards = projects.map((proj, i) => {
-            const delay = Math.min(i + 1, 8);
+            const delay = Math.min(i + 3, 8);
             const stackStr = `["${proj.stack.join('", "')}"]`;
 
             return el('div', { className: `project-card reveal reveal--scale reveal--delay-${delay}` }, [
@@ -286,7 +286,7 @@
         };
 
         const groups = skills.map((group, gi) => {
-            const delay = Math.min(gi + 1, 8);
+            const delay = Math.min(gi + 3, 8);
             const fillClass = barColorMap[group.colorClass] || 'skill__bar-fill--primary';
 
             const items = group.items.map(item =>
@@ -331,7 +331,7 @@
         const sectionEl = document.getElementById('contact');
 
         const channels = contact.channels.map((ch, i) => {
-            const delay = Math.min(i + 2, 8);
+            const delay = Math.min(i + 4, 8);
             return el('a', { className: `contact-channel reveal reveal--left reveal--delay-${delay}`, href: ch.href }, [
                 el('span', { className: 'contact-channel__index', textContent: ch.index }),
                 document.createTextNode(ch.label),
@@ -345,7 +345,7 @@
 
         const content = el('div', { className: 'section__content' }, [
             header,
-            el('div', { className: 'contact-box reveal reveal--scale reveal--delay-1' }, [
+            el('div', { className: 'contact-box reveal reveal--scale reveal--delay-3' }, [
                 el('div', { className: 'contact-status' }, [
                     el('span', { className: 'contact-status__dot animate-pulse' }),
                     el('span', { className: 'contact-status__text', textContent: contact.statusText }),
@@ -418,7 +418,7 @@
                             (async () => {
                                 for (let el of targets) {
                                     el.classList.add('blinking-cursor');
-                                    await typeText(el, el.dataset.type, 20);
+                                    await typeText(el, el.dataset.type, 10);
                                     el.classList.remove('blinking-cursor');
                                 }
                             })();
@@ -432,7 +432,6 @@
                             // Check if still visible before animating
                             if (entry.target.classList.contains('reveal--visible')) {
                                 bar.style.width = bar.dataset.width;
-                                bar.classList.add('skill__bar-fill--animate');
                             }
                         }, 200 + i * 80);
                         bar.dataset.tid = tid;
@@ -445,7 +444,6 @@
                     bars.forEach(bar => {
                         if (bar.dataset.tid) clearTimeout(Number(bar.dataset.tid));
                         bar.style.width = '0%';
-                        bar.classList.remove('skill__bar-fill--animate');
                     });
                 }
             });
