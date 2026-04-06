@@ -1,26 +1,50 @@
 [
     {
-        "category": "BACKEND.SYS",
+        "category": "BASE.SRC",
         "colorClass": "accent-primary",
         "items": [
-            { "name": "Rust_Lang", "level": 95 },
-            { "name": "Go_Engine", "level": 88 }
+            { "name": "Python", "level": 95 },
+            { "name": "SQL", "level": 88 }
         ]
     },
     {
-        "category": "INFRA.CORE",
+        "category": "DATA.INF",
         "colorClass": "accent-secondary",
         "items": [
-            { "name": "AWS_Cloud", "level": 92 },
-            { "name": "Docker_K8s", "level": 90 }
+            { "name": "Pandas", "level": 92 },
+            { "name": "PySpark", "level": 80 }
         ]
     },
     {
-        "category": "DESIGN.UI",
+        "category": "AI.SYS",
         "colorClass": "accent-tertiary",
         "items": [
-            { "name": "Typography", "level": 85 },
-            { "name": "Figma_Arch", "level": 70 }
+            { "name": "RAG", "level": 90 },
+            { "name": "Prompt_Design", "level": 88 }
+        ]
+    },
+    {
+        "category": "AUTOMATION.OPS",
+        "colorClass": "accent-primary",
+        "items": [
+            { "name": "Agentic_Orch", "level": 90 },
+            { "name": "Scraping", "level": 88 }
+        ]
+    },
+    {
+        "category": "VIBE.CO",
+        "colorClass": "accent-secondary",
+        "items": [
+            { "name": "Claude_Code", "level": 90 },
+            { "name": "OpenAI_Codex", "level": 75 }
+        ]
+    },
+    {
+        "category": "REPORTING.BI",
+        "colorClass": "accent-tertiary",
+        "items": [
+            { "name": "Power_BI", "level": 85 },
+            { "name": "Tableau", "level": 90 }
         ]
     }
 ]

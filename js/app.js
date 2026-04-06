@@ -327,7 +327,7 @@
 
         const header = el('div', { className: 'section-header reveal' }, [
             el('span', { className: 'section-header__tag type-target', 'data-type': '<!-- 03_SKILLS -->' }),
-            el('h2', { className: 'section-header__title type-target', 'data-type': 'Technical Stack' }),
+            el('h2', { className: 'section-header__title type-target', 'data-type': 'Core Stack' }),
         ]);
 
         const content = el('div', { className: 'section__content' }, [
