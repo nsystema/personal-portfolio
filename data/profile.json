@@ -3,7 +3,7 @@
     "initTag": "// INITIALIZING_PERSONA",
     "level": "SENIOR ARCHITECT",
     "location": "BERLIN_DE",
-    "navTitle": "SYS.ARCHIVE // 2024",
+    "navTitle": "TERMINAL_CV_V1.0",
     "navLinks": [
         { "label": "INDEX", "href": "#", "active": true },
         { "label": "STACK", "href": "#", "active": false },
