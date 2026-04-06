@@ -1,20 +1,47 @@
 [
     {
-        "role": "Lead Systems Architect",
-        "date": "2021 — PRESENT",
-        "company": "NEURAL_DYNAMICS",
-        "location": "TOKYO",
-        "description": "Engineering high-throughput distributed systems for autonomous neural networks. Orchestrated the transition from legacy monolithic architecture to a high-performance Rust-based microservices mesh.",
-        "tags": ["Distributed_Systems", "Rust", "Kubernetes"],
+        "role": "BI Analyst",
+        "date": "2023 — PRESENT",
+        "company": "FREELANCE — FIVERR",
+        "location": "REMOTE",
+        "description": "Constructing and debugging Tableau dashboards for marketing and operational tracking. Translating raw data structures into executive KPI frameworks and decision-ready intelligence.",
+        "tags": ["Tableau", "BI", "Data_Analytics"],
         "current": true
     },
     {
-        "role": "Senior Backend Engineer",
-        "date": "2018 — 2021",
-        "company": "CYBER_GRID",
-        "location": "SAN FRANCISCO",
-        "description": "Developed core API infrastructures handling 500k+ concurrent websocket connections. Reduced latency by 40% through custom memory management strategies.",
-        "tags": [],
+        "role": "Computer Vision Engineer (Master Thesis)",
+        "date": "2025",
+        "company": "HIKANE — EPFL STARTUP",
+        "location": "EPFL INNOVATION PARK, CH",
+        "description": "Benchmarked SOTA segmentation architectures (DeepLab, SegFormer, YOLO) for multimodal obstacle detection. Assessed inference latency versus accuracy to optimize deployment on constrained edge hardware.",
+        "tags": ["Computer_Vision", "Deep_Learning", "Segmentation"],
+        "current": false
+    },
+    {
+        "role": "M.S. in Data Science and Systems",
+        "date": "2022 — 2025",
+        "company": "ÉCOLE POLYTECHNIQUE FÉDÉRALE DE LAUSANNE",
+        "location": "LAUSANNE, CH",
+        "description": "Advanced studies focusing on machine learning operations, behavioral analysis, and system architecture. Developed core competencies in processing massive datasets and engineering scalable AI workflows.",
+        "tags": ["Data_Science", "AI_Systems"],
+        "current": false
+    },
+    {
+        "role": "AI Engineer (Intern)",
+        "date": "2024",
+        "company": "SQRIB — SWISS STARTUP",
+        "location": "LAUSANNE, CH",
+        "description": "Architected an end-to-end meeting intelligence pipeline utilizing speech-to-text and speaker diarization. Implemented vector embeddings and RAG protocols to enable semantic search over structured audio transcripts.",
+        "tags": ["Python", "RAG", "NLP"],
+        "current": false
+    },
+    {
+        "role": "B.S. in Electrical Engineering",
+        "date": "2018 — 2022",
+        "company": "ÉCOLE POLYTECHNIQUE FÉDÉRALE DE LAUSANNE",
+        "location": "LAUSANNE, CH",
+        "description": "Acquired rigorous mathematical and engineering foundations essential for complex signal processing, system dynamics, and algorithmic optimization.",
+        "tags": ["Electrical_Engineering", "Signal_Processing", "Mathematics"],
         "current": false
     }
 ]
