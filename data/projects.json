@@ -1,16 +1,30 @@
 [
     {
-        "title": "Project_Onyx",
-        "icon": "terminal",
-        "version": "v2.4.0",
-        "description": "A headless CMS optimized for terminal-based content delivery via SSH protocols. Built for extreme speed and low bandwidth.",
-        "stack": ["Go", "GRPC", "BoltDB"]
+        "title": "AI_Outreach_Automation",
+        "icon": "hub",
+        "version": "v2026.1",
+        "description": "Agentic workflow pipeline for startup detection, data enrichment, and personalized cold outreach. Features human-in-the-loop validation and scalable subagents.",
+        "stack": ["Python", "OpenAI API", "OpenClaw", "Apps Script"]
     },
     {
-        "title": "Core_Quant",
-        "icon": "dataset",
-        "version": "v1.0.2",
-        "description": "Real-time financial data visualizer using canvas rendering for 60fps technical analysis on mobile devices.",
-        "stack": ["TypeScript", "WebGL", "Rust"]
+        "title": "Gamified_Job_Tracker",
+        "icon": "terminal",
+        "version": "v2026.1",
+        "description": "Mobile application tracking utility designed to centralize opportunity data and drive accountability via specialized gaming loops. Built iteratively with AI-assisted development.",
+        "stack": ["Expo", "React Native", "Claude Code"]
+    },
+    {
+        "title": "Log_Behavioral_Analysis",
+        "icon": "analytics",
+        "version": "v2022.9",
+        "description": "Processed over 1B rows of raw server logs to build an analysis-ready dataset. Applied sequence mining to extract behavioral signals and clustered users into 8 core archetypes.",
+        "stack": ["Python", "Sequence Mining", "Clustering"]
+    },
+    {
+        "title": "TERMINAL_CV",
+        "icon": "code",
+        "version": "v1.0.0",
+        "description": "Terminal-aesthetic personal portfolio. Designed using Google Stitch and implemented natively using Google Antigravity, GitHub, and continuous deployment via Vercel.",
+        "stack": ["Google Stitch", "Google Antigravity", "GitHub", "Vercel"]
     }
 ]

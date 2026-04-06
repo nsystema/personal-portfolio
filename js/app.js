@@ -262,7 +262,7 @@
 
         const header = el('div', { className: 'section-header reveal' }, [
             el('span', { className: 'section-header__tag type-target', 'data-type': '<!-- 02_PROJECTS -->' }),
-            el('h2', { className: 'section-header__title type-target', 'data-type': 'Technical Repositories' }),
+            el('h2', { className: 'section-header__title type-target', 'data-type': 'Highlighted Projects' }),
         ]);
 
         const content = el('div', { className: 'section__content' }, [
