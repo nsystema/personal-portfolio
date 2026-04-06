@@ -44,6 +44,7 @@
     // ── Nav ───────────────────────────────────────────────────────────────
     function renderNav() {
         const navEl = document.getElementById('nav');
+        navEl.classList.add('nav--init');
 
         const container = el('div', { className: 'container-nav' }, [
             el('div', { className: 'nav__title', textContent: profile.navTitle }),
@@ -71,19 +72,19 @@
         const nameLines = profile.name.split('\n');
 
         const content = el('div', { className: 'section__content' }, [
-            el('p', { className: 'hero__tag', textContent: profile.initTag }),
+            el('p', { className: 'hero__tag hero--init-tag', textContent: profile.initTag }),
             el('h1', {
-                className: 'hero__name blinking-cursor',
+                className: 'hero__name blinking-cursor hero--init-name',
                 innerHTML: nameLines.join('<br />'),
             }),
-            el('div', { className: 'hero__meta' }, [
+            el('div', { className: 'hero__meta hero--init-meta' }, [
                 el('span', { className: 'hero__meta-text', textContent: `LEVEL: ${profile.level}` }),
                 el('span', { className: 'hero__meta-divider' }),
                 el('span', { className: 'hero__meta-text', textContent: `LOC: ${profile.location}` }),
             ]),
         ]);
 
-        const gutter = el('div', { className: 'section__gutter', innerHTML: '000<br />001<br />002' });
+        const gutter = el('div', { className: 'section__gutter hero--init-gutter', innerHTML: '000<br />001<br />002' });
 
         heroEl.appendChild(el('div', { className: 'section__row' }, [gutter, content]));
     }
@@ -92,7 +93,8 @@
     function renderExperience() {
         const sectionEl = document.getElementById('experience');
 
-        const items = experience.map(exp => {
+        const items = experience.map((exp, i) => {
+            const delay = Math.min(i + 1, 8);
             const children = [
                 el('div', {
                     className: `timeline__dot ${exp.current ? 'timeline__dot--current' : 'timeline__dot--past'}`,
@@ -116,21 +118,23 @@
                 );
             }
 
-            return el('div', { className: 'timeline__item' }, children);
+            return el('div', { className: `timeline__item reveal reveal--left reveal--delay-${delay}` }, children);
         });
 
         const timeline = el('div', { className: 'timeline' }, items);
 
+        const header = el('div', { className: 'section-header reveal' }, [
+            el('span', { className: 'section-header__tag', textContent: '<!-- 01_EXPERIENCE -->' }),
+            el('h2', { className: 'section-header__title', textContent: 'Professional History' }),
+        ]);
+
         const content = el('div', { className: 'section__content' }, [
-            el('div', { className: 'section-header' }, [
-                el('span', { className: 'section-header__tag', textContent: '<!-- 01_EXPERIENCE -->' }),
-                el('h2', { className: 'section-header__title', textContent: 'Professional History' }),
-            ]),
+            header,
             timeline,
         ]);
 
         const gutterLines = Array.from({ length: 5 }, (_, i) => String(i + 3).padStart(3, '0')).join('<br />');
-        const gutter = el('div', { className: 'section__gutter', innerHTML: gutterLines });
+        const gutter = el('div', { className: 'section__gutter reveal reveal--delay-2', innerHTML: gutterLines });
 
         sectionEl.appendChild(el('div', { className: 'section__row' }, [gutter, content]));
     }
@@ -139,10 +143,11 @@
     function renderProjects() {
         const sectionEl = document.getElementById('projects');
 
-        const cards = projects.map(proj => {
+        const cards = projects.map((proj, i) => {
+            const delay = Math.min(i + 1, 8);
             const stackStr = `["${proj.stack.join('", "')}"]`;
 
-            return el('div', { className: 'project-card' }, [
+            return el('div', { className: `project-card reveal reveal--scale reveal--delay-${delay}` }, [
                 el('div', { className: 'project-card__header' }, [
                     el('span', {
                         className: 'material-symbols-outlined filled project-card__icon',
@@ -160,15 +165,17 @@
             ]);
         });
 
+        const header = el('div', { className: 'section-header reveal' }, [
+            el('span', { className: 'section-header__tag', textContent: '<!-- 02_PROJECTS -->' }),
+            el('h2', { className: 'section-header__title', textContent: 'Technical Repositories' }),
+        ]);
+
         const content = el('div', { className: 'section__content' }, [
-            el('div', { className: 'section-header' }, [
-                el('span', { className: 'section-header__tag', textContent: '<!-- 02_PROJECTS -->' }),
-                el('h2', { className: 'section-header__title', textContent: 'Technical Repositories' }),
-            ]),
+            header,
             el('div', { className: 'projects-grid' }, cards),
         ]);
 
-        const gutter = el('div', { className: 'section__gutter', innerHTML: '008<br />009<br />010' });
+        const gutter = el('div', { className: 'section__gutter reveal reveal--delay-2', innerHTML: '008<br />009<br />010' });
 
         sectionEl.appendChild(el('div', { className: 'section__row' }, [gutter, content]));
     }
@@ -183,7 +190,8 @@
             'accent-tertiary': 'skill__bar-fill--tertiary',
         };
 
-        const groups = skills.map(group => {
+        const groups = skills.map((group, gi) => {
+            const delay = Math.min(gi + 1, 8);
             const fillClass = barColorMap[group.colorClass] || 'skill__bar-fill--primary';
 
             const items = group.items.map(item =>
@@ -195,27 +203,30 @@
                     el('div', { className: 'skill__bar-bg' }, [
                         el('div', {
                             className: `skill__bar-fill ${fillClass}`,
-                            style: { width: `${item.level}%` },
+                            'data-width': `${item.level}%`,
+                            style: { width: '0%' },
                         }),
                     ]),
                 ])
             );
 
-            return el('div', {}, [
+            return el('div', { className: `reveal reveal--delay-${delay}` }, [
                 el('h4', { className: 'skill-group__title', textContent: group.category }),
                 el('ul', { className: 'skill-group__list' }, items),
             ]);
         });
 
+        const header = el('div', { className: 'section-header reveal' }, [
+            el('span', { className: 'section-header__tag', textContent: '<!-- 03_SKILLS -->' }),
+            el('h2', { className: 'section-header__title', textContent: 'Technical Stack' }),
+        ]);
+
         const content = el('div', { className: 'section__content' }, [
-            el('div', { className: 'section-header' }, [
-                el('span', { className: 'section-header__tag', textContent: '<!-- 03_SKILLS -->' }),
-                el('h2', { className: 'section-header__title', textContent: 'Technical Stack' }),
-            ]),
+            header,
             el('div', { className: 'skills-grid' }, groups),
         ]);
 
-        const gutter = el('div', { className: 'section__gutter', innerHTML: '011<br />012<br />013' });
+        const gutter = el('div', { className: 'section__gutter reveal reveal--delay-2', innerHTML: '011<br />012<br />013' });
 
         sectionEl.appendChild(el('div', { className: 'section__row' }, [gutter, content]));
     }
@@ -224,19 +235,22 @@
     function renderContact() {
         const sectionEl = document.getElementById('contact');
 
-        const channels = contact.channels.map(ch =>
-            el('a', { className: 'contact-channel', href: ch.href }, [
+        const channels = contact.channels.map((ch, i) => {
+            const delay = Math.min(i + 2, 8);
+            return el('a', { className: `contact-channel reveal reveal--left reveal--delay-${delay}`, href: ch.href }, [
                 el('span', { className: 'contact-channel__index', textContent: ch.index }),
                 document.createTextNode(ch.label),
-            ])
-        );
+            ]);
+        });
+
+        const header = el('div', { className: 'section-header reveal' }, [
+            el('span', { className: 'section-header__tag', textContent: '<!-- 04_CONTACT -->' }),
+            el('h2', { className: 'section-header__title', textContent: 'Establish Uplink' }),
+        ]);
 
         const content = el('div', { className: 'section__content' }, [
-            el('div', { className: 'section-header' }, [
-                el('span', { className: 'section-header__tag', textContent: '<!-- 04_CONTACT -->' }),
-                el('h2', { className: 'section-header__title', textContent: 'Establish Uplink' }),
-            ]),
-            el('div', { className: 'contact-box' }, [
+            header,
+            el('div', { className: 'contact-box reveal reveal--scale reveal--delay-1' }, [
                 el('div', { className: 'contact-status' }, [
                     el('span', { className: 'contact-status__dot animate-pulse' }),
                     el('span', { className: 'contact-status__text', textContent: contact.statusText }),
@@ -255,7 +269,7 @@
             ]),
         ]);
 
-        const gutter = el('div', { className: 'section__gutter', innerHTML: '014<br />015' });
+        const gutter = el('div', { className: 'section__gutter reveal reveal--delay-2', innerHTML: '014<br />015' });
 
         sectionEl.appendChild(el('div', { className: 'section__row' }, [gutter, content]));
     }
@@ -264,7 +278,7 @@
     function renderFooter() {
         const footerEl = document.getElementById('footer');
 
-        const container = el('div', { className: 'container-footer' }, [
+        const container = el('div', { className: 'container-footer reveal' }, [
             el('div', { className: 'footer__copyright' }, [
                 document.createTextNode(`${profile.footerCopyright} - `),
                 el('span', { className: 'footer__status animate-pulse', textContent: 'STATUS: 200 OK' }),
@@ -280,6 +294,43 @@
         footerEl.appendChild(container);
     }
 
+    // ── Scroll-Reveal Observer ────────────────────────────────────────────
+    function initScrollReveal() {
+        // Skip if reduced-motion is preferred
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            document.querySelectorAll('.reveal').forEach(el => el.classList.add('reveal--visible'));
+            // Still animate skill bars immediately
+            document.querySelectorAll('.skill__bar-fill[data-width]').forEach(bar => {
+                bar.style.width = bar.dataset.width;
+            });
+            return;
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('reveal--visible');
+
+                    // Animate skill bars inside this element
+                    const bars = entry.target.querySelectorAll('.skill__bar-fill[data-width]');
+                    bars.forEach((bar, i) => {
+                        setTimeout(() => {
+                            bar.style.width = bar.dataset.width;
+                            bar.classList.add('skill__bar-fill--animate');
+                        }, 200 + i * 80);
+                    });
+
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.08,
+            rootMargin: '0px 0px -40px 0px',
+        });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    }
+
     // ── Render All ────────────────────────────────────────────────────────
     renderNav();
     renderHero();
@@ -288,5 +339,8 @@
     renderSkills();
     renderContact();
     renderFooter();
+
+    // Kick off scroll reveals after rendering
+    initScrollReveal();
 
 })();
