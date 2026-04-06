@@ -396,8 +396,14 @@ body.glow-hero .mouse-glow {
         transparent 62%
     );
 
-    -webkit-mask-image: url('../assets/Claude_code_asset-812a9772-6631-48fc-aae3-8961bdcfb220.png');
-    mask-image: url('../assets/Claude_code_asset-812a9772-6631-48fc-aae3-8961bdcfb220.png');
+    -webkit-mask-image:
+        url('../assets/Claude_code_asset-812a9772-6631-48fc-aae3-8961bdcfb220.png'),
+        radial-gradient(circle at center, white 30%, transparent 70%);
+    mask-image:
+        url('../assets/Claude_code_asset-812a9772-6631-48fc-aae3-8961bdcfb220.png'),
+        radial-gradient(circle at center, white 30%, transparent 70%);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
     -webkit-mask-repeat: no-repeat;
     mask-repeat: no-repeat;
     -webkit-mask-position: center;
