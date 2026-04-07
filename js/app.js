@@ -84,8 +84,10 @@
                     })
                 )
             ),
-            el('button', {
+            el('a', {
                 className: 'nav__cta',
+                href: 'https://drive.google.com/uc?export=download&id=1oVwn_mZ2pOSIeG6xvFCltOHTdgrWOU2t',
+                target: '_blank',
                 textContent: '> DOWNLOAD_CV',
             }),
         ]);
