@@ -350,6 +350,7 @@
         ]);
 
         const formHTML = `
+<iframe class="contact-form__sink" name="contact-form-sink" src="about:blank" title="Contact form response sink"></iframe>
 <div class="contact-panel-header">
     <div class="contact-panel-header__left">
         <div class="contact-status__dot animate-pulse"></div>
@@ -357,7 +358,13 @@
     </div>
     <span class="contact-panel-header__ttl">PORT: 443</span>
 </div>
-<form class="contact-form" onsubmit="event.preventDefault();">
+<form class="contact-form" action="/api/contact" method="POST" target="contact-form-sink" novalidate>
+    <input name="_subject" type="hidden" value="[Website Form] New message from this site" />
+    <input name="_replyto" type="hidden" value="" />
+    <input name="_url" type="hidden" value="" />
+    <input name="_captcha" type="hidden" value="false" />
+    <input name="_template" type="hidden" value="table" />
+    <input name="_honey" class="contact-form__honeypot" type="text" tabindex="-1" autocomplete="off" />
     <div class="contact-form__group group">
         <div class="contact-form__header">
             <label class="contact-form__label">USER_NAME</label>
@@ -365,7 +372,7 @@
         </div>
         <div class="contact-form__input-wrapper">
             <span class="contact-form__prompt">&gt;</span>
-            <input class="ping-input contact-form__input" placeholder="NAME_INPUT" type="text"/>
+            <input class="ping-input contact-form__input" placeholder="NAME_INPUT" name="name" autocomplete="name" type="text" required/>
         </div>
     </div>
     <div class="contact-form__group group">
@@ -375,7 +382,7 @@
         </div>
         <div class="contact-form__input-wrapper">
             <span class="contact-form__prompt">&gt;</span>
-            <input class="ping-input contact-form__input" placeholder="EMAIL_ENCODING" type="email"/>
+            <input class="ping-input contact-form__input" placeholder="EMAIL_ENCODING" name="email" autocomplete="email" type="email" required/>
         </div>
     </div>
     <div class="contact-form__group group">
@@ -385,7 +392,7 @@
         </div>
         <div class="contact-form__input-wrapper contact-form__input-wrapper--textarea">
             <span class="contact-form__prompt pt-4">&gt;</span>
-            <textarea class="ping-input contact-form__input contact-form__textarea" placeholder="WRITE_YOUR_REQUEST_HERE..." rows="3"></textarea>
+            <textarea class="ping-input contact-form__input contact-form__textarea" placeholder="WRITE_YOUR_REQUEST_HERE..." name="message" rows="3" required></textarea>
         </div>
     </div>
     <div class="contact-form__footer">
@@ -393,6 +400,7 @@
             <span class="contact-form__submit-text">[ SEND_REQUEST ]</span>
             <div class="contact-form__submit-bg"></div>
         </button>
+        <p class="contact-form__feedback" aria-live="polite"></p>
         <div class="contact-form__meta">
             <span class="contact-form__meta-text">ENCRYPTION: AES-256-GCM</span>
             <span class="contact-form__meta-text">SESSION: 8FA-22B-9XP</span>
@@ -403,12 +411,99 @@
 
         const content = el('div', { className: 'section__content' }, [
             header,
+            el('p', { className: 'contact-panel__description reveal reveal--delay-1', textContent: contact.description }),
             el('div', { className: 'contact-panel reveal reveal--scale reveal--delay-3', innerHTML: formHTML }),
         ]);
 
         const gutter = el('div', { className: 'section__gutter reveal reveal--delay-2', innerHTML: '014<br />015' });
 
         sectionEl.appendChild(el('div', { className: 'section__row' }, [gutter, content]));
+
+        const form = sectionEl.querySelector('.contact-form');
+        const submitButton = sectionEl.querySelector('.contact-form__submit');
+        const submitText = sectionEl.querySelector('.contact-form__submit-text');
+        const feedback = sectionEl.querySelector('.contact-form__feedback');
+        const subjectInput = form.querySelector('input[name="_subject"]');
+        const replyToInput = form.querySelector('input[name="_replyto"]');
+        const urlInput = form.querySelector('input[name="_url"]');
+        const nameInput = form.querySelector('input[name="name"]');
+        const emailInput = form.querySelector('input[name="email"]');
+        const messageInput = form.querySelector('textarea[name="message"]');
+        const iframe = sectionEl.querySelector('.contact-form__sink');
+
+        let sawInitialIframeLoad = false;
+        let submissionPending = false;
+
+        function setFeedback(text, variant = '') {
+            feedback.textContent = text;
+            feedback.className = `contact-form__feedback ${variant}`.trim();
+        }
+
+        iframe.addEventListener('load', () => {
+            if (!sawInitialIframeLoad) {
+                sawInitialIframeLoad = true;
+                return;
+            }
+
+            if (!submissionPending) return;
+
+            let response = null;
+
+            try {
+                const responseText = iframe.contentDocument?.body?.textContent?.trim() || '';
+                response = responseText ? JSON.parse(responseText) : null;
+            } catch {
+                response = null;
+            }
+
+            submissionPending = false;
+            submitButton.disabled = false;
+
+            if (response && response.ok) {
+                submitText.textContent = '[ SENT ]';
+                setFeedback('Message queued. I will reply to the address you entered.', 'contact-form__feedback--success');
+                form.reset();
+                subjectInput.value = '[Website Form] New message from this site';
+                replyToInput.value = '';
+                urlInput.value = '';
+                return;
+            }
+
+            submitText.textContent = '[ SEND_REQUEST ]';
+            setFeedback(
+                (response && response.error) || 'Delivery failed. Please try again in a moment.',
+                'contact-form__feedback--error'
+            );
+        });
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const senderEmail = emailInput.value.trim();
+            const senderName = nameInput.value.trim();
+            const message = messageInput.value.trim();
+
+            if (!senderName || !senderEmail || !message) {
+                setFeedback('All fields are required.', 'contact-form__feedback--error');
+                return;
+            }
+
+            subjectInput.value = `[Website Form] ${senderEmail}`;
+            replyToInput.value = senderEmail;
+            urlInput.value = window.location.href;
+
+            submissionPending = true;
+            submitButton.disabled = true;
+            submitText.textContent = '[ SENDING... ]';
+            setFeedback(`Sending as ${senderName || 'anonymous sender'}...`, 'contact-form__feedback--pending');
+
+            form.submit();
+        });
     }
 
     // ── Footer ────────────────────────────────────────────────────────────
