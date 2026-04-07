@@ -1,5 +1,4 @@
 {
-  "scripts": {
-    "vercel-build": "next build"
-  }
+  "name": "gher",
+  "private": true
 }
