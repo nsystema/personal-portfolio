@@ -1,5 +1,0 @@
-{
-  "last_turn_at": "2026-04-07T06:40:39.159Z",
-  "turn_count": 11,
-  "last_agent_output": "Stored.\n\n- Added `RESEND_API_KEY` to the local ignored `.env.local`.\n- Added the same key to Vercel "
-}
