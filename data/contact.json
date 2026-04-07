@@ -1,13 +1,3 @@
 {
-    "statusText": "STATUS: 200 OK // PING: 24MS",
-    "description": "Open to high-impact roles and selected projects. Reach out through the secure channels below.",
-    "email": {
-        "text": "> nsystema@mizancalendar.com",
-        "href": "mailto:nsystema@mizancalendar.com"
-    },
-    "channels": [
-        { "index": "01", "label": "GITHUB.COM/ALEX_RIVERA", "href": "#" },
-        { "index": "02", "label": "LINKEDIN.COM/IN/ALEX_R", "href": "#" },
-        { "index": "03", "label": "X.COM/TERMINAL_R", "href": "#" }
-    ]
+    "description": "Open to high-impact roles and selected projects. Reach out through the secure channels below."
 }

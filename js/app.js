@@ -358,11 +358,7 @@
     <span class="contact-panel-header__ttl">PORT: 443</span>
 </div>
 <form class="contact-form" action="/api/contact" method="POST" novalidate>
-    <input name="_subject" type="hidden" value="[Website Form] New message from this site" />
-    <input name="_replyto" type="hidden" value="" />
     <input name="_url" type="hidden" value="" />
-    <input name="_captcha" type="hidden" value="false" />
-    <input name="_template" type="hidden" value="table" />
     <input name="_honey" class="contact-form__honeypot" type="text" tabindex="-1" autocomplete="off" />
     <div class="contact-form__group group">
         <div class="contact-form__header">
@@ -422,8 +418,6 @@
         const submitButton = sectionEl.querySelector('.contact-form__submit');
         const submitText = sectionEl.querySelector('.contact-form__submit-text');
         const feedback = sectionEl.querySelector('.contact-form__feedback');
-        const subjectInput = form.querySelector('input[name="_subject"]');
-        const replyToInput = form.querySelector('input[name="_replyto"]');
         const urlInput = form.querySelector('input[name="_url"]');
         const nameInput = form.querySelector('input[name="name"]');
         const emailInput = form.querySelector('input[name="email"]');
@@ -451,8 +445,6 @@
                 return;
             }
 
-            subjectInput.value = `[Website Form] ${senderEmail}`;
-            replyToInput.value = senderEmail;
             urlInput.value = window.location.href;
 
             submitButton.disabled = true;
@@ -481,8 +473,6 @@
                     submitText.textContent = '[ SENT ]';
                     setFeedback('Message sent. I will reply to the email address you entered.', 'contact-form__feedback--success');
                     form.reset();
-                    subjectInput.value = '[Website Form] New message from this site';
-                    replyToInput.value = '';
                     urlInput.value = '';
                     return;
                 }
