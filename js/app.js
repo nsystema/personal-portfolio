@@ -457,7 +457,7 @@
 
             submitButton.disabled = true;
             submitText.textContent = '[ SENDING... ]';
-            setFeedback(`Sending as ${senderName || 'anonymous sender'}...`, 'contact-form__feedback--pending');
+            setFeedback('Sending your message...', 'contact-form__feedback--pending');
 
             try {
                 const response = await fetch(form.action, {
@@ -479,7 +479,7 @@
 
                 if (response.ok && payload && payload.ok) {
                     submitText.textContent = '[ SENT ]';
-                    setFeedback('Message queued. I will reply to the address you entered.', 'contact-form__feedback--success');
+                    setFeedback('Message sent. I will reply to the email address you entered.', 'contact-form__feedback--success');
                     form.reset();
                     subjectInput.value = '[Website Form] New message from this site';
                     replyToInput.value = '';
@@ -488,21 +488,10 @@
                 }
 
                 submitText.textContent = '[ SEND_REQUEST ]';
-                const failureMessage =
-                    (payload && payload.upstream && (payload.upstream.message || payload.upstream.error)) ||
-                    (payload && payload.detail) ||
-                    (payload && payload.error) ||
-                    'Delivery failed. Please try again in a moment.';
-                setFeedback(
-                    failureMessage,
-                    'contact-form__feedback--error'
-                );
+                setFeedback((payload && payload.error) || 'Your message could not be sent right now. Please try again in a moment.', 'contact-form__feedback--error');
             } catch (error) {
                 submitText.textContent = '[ SEND_REQUEST ]';
-                setFeedback(
-                    error instanceof Error ? error.message : 'Delivery failed. Please try again in a moment.',
-                    'contact-form__feedback--error'
-                );
+                setFeedback('Your message could not be sent right now. Please try again in a moment.', 'contact-form__feedback--error');
             } finally {
                 submitButton.disabled = false;
             }

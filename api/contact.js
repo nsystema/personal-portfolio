@@ -93,6 +93,17 @@ function buildIdempotencyKey({ name, email, message, url }) {
         .digest('hex');
 }
 
+function userFacingError(message, detail) {
+    if (detail) {
+        console.error('[contact-form]', detail);
+    }
+
+    return {
+        ok: false,
+        error: message,
+    };
+}
+
 async function postWithTimeout(url, payload, apiKey) {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), RESEND_TIMEOUT_MS);
@@ -136,7 +147,7 @@ module.exports = async function handler(req, res) {
         }
 
         if (!name || !email || !message) {
-            return json(res, 400, { ok: false, error: 'Name, email, and message are required.' });
+            return json(res, 400, userFacingError('Please fill in your name, email, and message.'));
         }
 
         const apiKey = String(process.env.RESEND_API_KEY || '').trim();
@@ -145,8 +156,7 @@ module.exports = async function handler(req, res) {
 
         if (!apiKey) {
             return json(res, 500, {
-                ok: false,
-                error: 'Email service is not configured. Set RESEND_API_KEY in your deployment.',
+                ...userFacingError('The message form is temporarily unavailable. Please try again later.', 'Missing RESEND_API_KEY'),
             });
         }
 
@@ -178,19 +188,18 @@ module.exports = async function handler(req, res) {
         }
 
         return json(res, 502, {
-            ok: false,
-            error: 'Email delivery failed through Resend.',
-            upstream: upstreamData,
+            ...userFacingError('Your message could not be sent right now. Please try again in a moment.', upstreamData),
         });
     } catch (error) {
         const timeout = error instanceof Error && error.name === 'AbortError';
 
         return json(res, 500, {
-            ok: false,
-            error: timeout
-                ? `Resend request timed out after ${RESEND_TIMEOUT_MS}ms.`
-                : 'Unexpected contact form failure.',
-            detail: error instanceof Error ? error.message : String(error),
+            ...userFacingError(
+                timeout
+                    ? 'The message service is taking longer than usual. Please try again in a moment.'
+                    : 'The message form is temporarily unavailable. Please try again later.',
+                error instanceof Error ? error.message : String(error)
+            ),
         });
     }
 };
