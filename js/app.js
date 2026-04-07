@@ -350,7 +350,6 @@
         ]);
 
         const formHTML = `
-<iframe class="contact-form__sink" name="contact-form-sink" src="about:blank" title="Contact form response sink"></iframe>
 <div class="contact-panel-header">
     <div class="contact-panel-header__left">
         <div class="contact-status__dot animate-pulse"></div>
@@ -358,7 +357,7 @@
     </div>
     <span class="contact-panel-header__ttl">PORT: 443</span>
 </div>
-<form class="contact-form" action="/api/contact" method="POST" target="contact-form-sink" novalidate>
+<form class="contact-form" action="/api/contact" method="POST" novalidate>
     <input name="_subject" type="hidden" value="[Website Form] New message from this site" />
     <input name="_replyto" type="hidden" value="" />
     <input name="_url" type="hidden" value="" />
@@ -489,8 +488,13 @@
                 }
 
                 submitText.textContent = '[ SEND_REQUEST ]';
+                const failureMessage =
+                    (payload && payload.upstream && (payload.upstream.message || payload.upstream.error)) ||
+                    (payload && payload.detail) ||
+                    (payload && payload.error) ||
+                    'Delivery failed. Please try again in a moment.';
                 setFeedback(
-                    (payload && payload.error) || 'Delivery failed. Please try again in a moment.',
+                    failureMessage,
                     'contact-form__feedback--error'
                 );
             } catch (error) {

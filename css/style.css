@@ -845,19 +845,6 @@ body.glow-hero .mouse-glow::after {
     line-height: 1.625;
 }
 
-.contact-form__sink {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    border: 0;
-    padding: 0;
-    margin: 0;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    clip-path: inset(50%);
-    white-space: nowrap;
-}
-
 .contact-panel-header {
     border-bottom: 1px solid rgba(85, 67, 61, 0.4);
     padding: 0.75rem 1.5rem;
