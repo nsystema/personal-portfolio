@@ -344,38 +344,66 @@
     function renderContact() {
         const sectionEl = document.getElementById('contact');
 
-        const channels = contact.channels.map((ch, i) => {
-            const delay = Math.min(i + 4, 8);
-            return el('a', { className: `contact-channel reveal reveal--left reveal--delay-${delay}`, href: ch.href }, [
-                el('span', { className: 'contact-channel__index', textContent: ch.index }),
-                document.createTextNode(ch.label),
-            ]);
-        });
-
         const header = el('div', { className: 'section-header reveal' }, [
             el('span', { className: 'section-header__tag type-target', 'data-type': '<!-- 04_CONTACT -->' }),
             el('h2', { className: 'section-header__title type-target', 'data-type': 'Establish Uplink' }),
         ]);
 
+        const formHTML = `
+<div class="contact-panel-header">
+    <div class="contact-panel-header__left">
+        <div class="contact-status__dot animate-pulse"></div>
+        <span class="contact-panel-header__protocol">PACKET_PROTOCOL: SECURE_V2</span>
+    </div>
+    <span class="contact-panel-header__ttl">TTL: 64 // PORT: 443</span>
+</div>
+<form class="contact-form" onsubmit="event.preventDefault();">
+    <div class="contact-form__group group">
+        <div class="contact-form__header">
+            <label class="contact-form__label">Destination_User</label>
+            <span class="ping-status contact-form__status">STATUS:</span>
+        </div>
+        <div class="contact-form__input-wrapper">
+            <span class="contact-form__prompt">&gt;</span>
+            <input class="ping-input contact-form__input" placeholder="NAME_INPUT" type="text"/>
+        </div>
+    </div>
+    <div class="contact-form__group group">
+        <div class="contact-form__header">
+            <label class="contact-form__label">Return_Address</label>
+            <span class="ping-status contact-form__status">STATUS:</span>
+        </div>
+        <div class="contact-form__input-wrapper">
+            <span class="contact-form__prompt">&gt;</span>
+            <input class="ping-input contact-form__input" placeholder="EMAIL_ENCODING" type="email"/>
+        </div>
+    </div>
+    <div class="contact-form__group group">
+        <div class="contact-form__header">
+            <label class="contact-form__label">Data_Payload</label>
+            <span class="ping-status contact-form__status">STATUS:</span>
+        </div>
+        <div class="contact-form__input-wrapper contact-form__input-wrapper--textarea">
+            <span class="contact-form__prompt pt-4">&gt;</span>
+            <textarea class="ping-input contact-form__input contact-form__textarea" placeholder="WRITE_YOUR_REQUEST_HERE..." rows="3"></textarea>
+        </div>
+    </div>
+    <div class="contact-form__footer">
+        <button class="contact-form__submit group-btn" type="submit">
+            <span class="contact-form__submit-text">[ SEND_REQUEST ]</span>
+            <div class="contact-form__submit-bg"></div>
+        </button>
+        <div class="contact-form__meta">
+            <span class="contact-form__meta-text">ENCRYPTION: AES-256-GCM</span>
+            <span class="contact-form__meta-text">SESSION: 8FA-22B-9XP</span>
+        </div>
+    </div>
+</form>
+`;
+
         const content = el('div', { className: 'section__content' }, [
             header,
-            el('div', { className: 'contact-box reveal reveal--scale reveal--delay-3' }, [
-                el('div', { className: 'contact-status' }, [
-                    el('span', { className: 'contact-status__dot animate-pulse' }),
-                    el('span', { className: 'contact-status__text', textContent: contact.statusText }),
-                ]),
-                el('div', { className: 'contact-body' }, [
-                    el('div', {}, [
-                        el('p', { className: 'contact-body__description', textContent: contact.description }),
-                        el('a', {
-                            className: 'contact-body__email',
-                            href: contact.email.href,
-                            textContent: contact.email.text,
-                        }),
-                    ]),
-                    el('div', { className: 'contact-channels' }, channels),
-                ]),
-            ]),
+            el('div', { className: 'contact-panel reveal reveal--scale reveal--delay-3', innerHTML: formHTML }),
         ]);
 
         const gutter = el('div', { className: 'section__gutter reveal reveal--delay-2', innerHTML: '014<br />015' });
