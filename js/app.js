@@ -504,8 +504,7 @@
 
         const container = el('div', { className: 'container-footer reveal' }, [
             el('div', { className: 'footer__copyright' }, [
-                document.createTextNode(`${profile.footerCopyright} - `),
-                el('span', { className: 'footer__status animate-pulse', textContent: 'STATUS: 200 OK' }),
+                el('span', { className: 'footer__copyright-label animate-pulse', textContent: profile.footerCopyright }),
             ]),
             el('div', { className: 'footer__links' },
                 profile.footerLinks.map(link => {

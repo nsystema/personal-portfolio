@@ -1098,7 +1098,7 @@ body.glow-hero .mouse-glow::after {
     font-family: var(--font-body);
 }
 
-.footer__status {
+.footer__copyright-label {
     color: var(--color-primary-container);
 }
 
