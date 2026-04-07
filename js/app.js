@@ -353,14 +353,14 @@
 <div class="contact-panel-header">
     <div class="contact-panel-header__left">
         <div class="contact-status__dot animate-pulse"></div>
-        <span class="contact-panel-header__protocol">PACKET_PROTOCOL: SECURE_V2</span>
+        <span class="contact-panel-header__protocol">SECURE_CHANNEL</span>
     </div>
-    <span class="contact-panel-header__ttl">TTL: 64 // PORT: 443</span>
+    <span class="contact-panel-header__ttl">PORT: 443</span>
 </div>
 <form class="contact-form" onsubmit="event.preventDefault();">
     <div class="contact-form__group group">
         <div class="contact-form__header">
-            <label class="contact-form__label">Destination_User</label>
+            <label class="contact-form__label">USER_NAME</label>
             <span class="ping-status contact-form__status">STATUS:</span>
         </div>
         <div class="contact-form__input-wrapper">
@@ -370,7 +370,7 @@
     </div>
     <div class="contact-form__group group">
         <div class="contact-form__header">
-            <label class="contact-form__label">Return_Address</label>
+            <label class="contact-form__label">USER_ADDRESS</label>
             <span class="ping-status contact-form__status">STATUS:</span>
         </div>
         <div class="contact-form__input-wrapper">

@@ -981,11 +981,14 @@ body.glow-hero .mouse-glow::after {
 }
 
 .contact-form__submit {
-    width: 100%;
+    margin: 0 auto;
+    display: block;
+    width: fit-content;
+    min-width: 200px;
     background-color: var(--color-primary-container);
     color: var(--color-background);
-    padding: 2rem 0;
-    font-size: 1.25rem;
+    padding: 1rem 2rem;
+    font-size: 1rem;
     font-weight: 700;
     font-family: var(--font-headline);
     letter-spacing: 0.2em;
