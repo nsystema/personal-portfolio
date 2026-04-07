@@ -1,5 +1,3 @@
-const { createHash } = require('node:crypto');
-
 const RESEND_API_URL = 'https://api.resend.com/emails';
 const RESEND_TIMEOUT_MS = 8000;
 const RESEND_USER_AGENT = 'TERMINAL_CV/1.0';
@@ -87,12 +85,6 @@ function buildEmailText({ name, email, message, url }) {
     return lines.join('\n');
 }
 
-function buildIdempotencyKey({ name, email, message, url }) {
-    return createHash('sha256')
-        .update([name, email, message, url].join('\n'))
-        .digest('hex');
-}
-
 function userFacingError(message, detail) {
     if (detail) {
         console.error('[contact-form]', detail);
@@ -114,7 +106,6 @@ async function postWithTimeout(url, payload, apiKey) {
             headers: {
                 Authorization: `Bearer ${apiKey}`,
                 'Content-Type': 'application/json',
-                'Idempotency-Key': buildIdempotencyKey(payload),
                 'User-Agent': RESEND_USER_AGENT,
             },
             body: JSON.stringify(payload),
