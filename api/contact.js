@@ -3,6 +3,8 @@ const FORM_SUBMIT_ENDPOINTS = [
     'https://formsubmit.co/nsystema@mizancalendar.com',
 ];
 
+const UPSTREAM_TIMEOUT_MS = 8000;
+
 function readBody(req) {
     return new Promise((resolve, reject) => {
         let raw = '';
@@ -36,6 +38,25 @@ function json(res, statusCode, payload) {
     res.setHeader('Content-Type', 'application/json; charset=utf-8');
     res.setHeader('Cache-Control', 'no-store');
     res.end(JSON.stringify(payload));
+}
+
+async function postWithTimeout(endpoint, payload) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), UPSTREAM_TIMEOUT_MS);
+
+    try {
+        return await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+            },
+            body: payload,
+            signal: controller.signal,
+        });
+    } finally {
+        clearTimeout(timeoutId);
+    }
 }
 
 module.exports = async function handler(req, res) {
@@ -76,14 +97,7 @@ module.exports = async function handler(req, res) {
 
         for (const endpoint of FORM_SUBMIT_ENDPOINTS) {
             try {
-                const upstreamResponse = await fetch(endpoint, {
-                    method: 'POST',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-                    },
-                    body: recipientPayload.toString(),
-                });
+                const upstreamResponse = await postWithTimeout(endpoint, recipientPayload.toString());
 
                 const responseText = await upstreamResponse.text();
                 let upstreamData = null;
@@ -103,7 +117,11 @@ module.exports = async function handler(req, res) {
 
                 lastError = upstreamData;
             } catch (error) {
-                lastError = error instanceof Error ? error.message : String(error);
+                if (error instanceof Error && error.name === 'AbortError') {
+                    lastError = `Upstream relay timed out after ${UPSTREAM_TIMEOUT_MS}ms`;
+                } else {
+                    lastError = error instanceof Error ? error.message : String(error);
+                }
             }
         }
 

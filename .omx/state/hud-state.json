@@ -1,5 +1,5 @@
 {
-  "last_turn_at": "2026-04-07T06:20:50.880Z",
-  "turn_count": 7,
-  "last_agent_output": "The failure was the stale Vercel build hook, not the contact form code.\n\nI reproduced it locally:\n- "
+  "last_turn_at": "2026-04-07T06:29:32.627Z",
+  "turn_count": 8,
+  "last_agent_output": "The contact flow is hardened now.\n\n**What changed**\n- The browser no longer waits on a hidden iframe"
 }

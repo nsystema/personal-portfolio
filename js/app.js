@@ -429,54 +429,13 @@
         const nameInput = form.querySelector('input[name="name"]');
         const emailInput = form.querySelector('input[name="email"]');
         const messageInput = form.querySelector('textarea[name="message"]');
-        const iframe = sectionEl.querySelector('.contact-form__sink');
-
-        let sawInitialIframeLoad = false;
-        let submissionPending = false;
 
         function setFeedback(text, variant = '') {
             feedback.textContent = text;
             feedback.className = `contact-form__feedback ${variant}`.trim();
         }
 
-        iframe.addEventListener('load', () => {
-            if (!sawInitialIframeLoad) {
-                sawInitialIframeLoad = true;
-                return;
-            }
-
-            if (!submissionPending) return;
-
-            let response = null;
-
-            try {
-                const responseText = iframe.contentDocument?.body?.textContent?.trim() || '';
-                response = responseText ? JSON.parse(responseText) : null;
-            } catch {
-                response = null;
-            }
-
-            submissionPending = false;
-            submitButton.disabled = false;
-
-            if (response && response.ok) {
-                submitText.textContent = '[ SENT ]';
-                setFeedback('Message queued. I will reply to the address you entered.', 'contact-form__feedback--success');
-                form.reset();
-                subjectInput.value = '[Website Form] New message from this site';
-                replyToInput.value = '';
-                urlInput.value = '';
-                return;
-            }
-
-            submitText.textContent = '[ SEND_REQUEST ]';
-            setFeedback(
-                (response && response.error) || 'Delivery failed. Please try again in a moment.',
-                'contact-form__feedback--error'
-            );
-        });
-
-        form.addEventListener('submit', (event) => {
+        form.addEventListener('submit', async (event) => {
             event.preventDefault();
 
             if (!form.checkValidity()) {
@@ -497,12 +456,52 @@
             replyToInput.value = senderEmail;
             urlInput.value = window.location.href;
 
-            submissionPending = true;
             submitButton.disabled = true;
             submitText.textContent = '[ SENDING... ]';
             setFeedback(`Sending as ${senderName || 'anonymous sender'}...`, 'contact-form__feedback--pending');
 
-            form.submit();
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+                    },
+                    body: new URLSearchParams(new FormData(form)).toString(),
+                });
+
+                let payload = null;
+
+                try {
+                    payload = await response.json();
+                } catch {
+                    payload = null;
+                }
+
+                if (response.ok && payload && payload.ok) {
+                    submitText.textContent = '[ SENT ]';
+                    setFeedback('Message queued. I will reply to the address you entered.', 'contact-form__feedback--success');
+                    form.reset();
+                    subjectInput.value = '[Website Form] New message from this site';
+                    replyToInput.value = '';
+                    urlInput.value = '';
+                    return;
+                }
+
+                submitText.textContent = '[ SEND_REQUEST ]';
+                setFeedback(
+                    (payload && payload.error) || 'Delivery failed. Please try again in a moment.',
+                    'contact-form__feedback--error'
+                );
+            } catch (error) {
+                submitText.textContent = '[ SEND_REQUEST ]';
+                setFeedback(
+                    error instanceof Error ? error.message : 'Delivery failed. Please try again in a moment.',
+                    'contact-form__feedback--error'
+                );
+            } finally {
+                submitButton.disabled = false;
+            }
         });
     }
 
