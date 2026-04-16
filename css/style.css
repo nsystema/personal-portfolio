@@ -1168,45 +1168,6 @@ body.glow-hero .mouse-glow::after {
     opacity: 0.16;
 }
 
-.map-audio__map-overlay {
-    position: absolute;
-    top: 6rem;
-    left: 2rem;
-    z-index: 3;
-    max-width: 29rem;
-    padding: 1rem 1.25rem 1.1rem;
-    border: 1px solid rgba(219, 193, 185, 0.24);
-    background: rgba(10, 10, 10, 0.5);
-    backdrop-filter: blur(12px);
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
-}
-
-.map-audio__map-kicker {
-    display: block;
-    margin-bottom: 0.65rem;
-    color: var(--color-primary);
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-}
-
-.map-audio__map-title {
-    font-family: var(--font-headline);
-    font-size: clamp(1.5rem, 3vw, 2.4rem);
-    line-height: 1;
-    letter-spacing: -0.04em;
-    text-transform: uppercase;
-    color: var(--color-on-background);
-}
-
-.map-audio__map-caption {
-    margin-top: 0.8rem;
-    color: rgba(229, 226, 225, 0.72);
-    font-size: 0.72rem;
-    line-height: 1.6;
-    max-width: 24rem;
-}
-
 .map-audio__map {
     position: relative;
     display: block;
@@ -1366,30 +1327,23 @@ body.glow-hero .mouse-glow::after {
         height: 26rem;
     }
 
-    .map-audio__map-overlay {
-        top: 4.75rem;
-        left: 1rem;
-        right: 1rem;
-        padding: 0.9rem 1rem;
-    }
-
-    .map-audio__map-title {
-        font-size: 1.45rem;
-    }
-
-    .map-audio__map-caption {
-        max-width: none;
-        font-size: 0.7rem;
-    }
-
     .container-footer {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        padding: 1rem 1rem;
     }
 
     .footer__links {
-        flex-wrap: wrap;
-        gap: 1rem;
+        flex-wrap: nowrap;
+        gap: 0.75rem;
+        min-width: 0;
+    }
+
+    .footer__link,
+    .footer__copyright {
+        font-size: 9px;
+        letter-spacing: 0.06em;
     }
 }

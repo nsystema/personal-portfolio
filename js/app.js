@@ -514,14 +514,6 @@
                 ]),
             ]),
             el('div', { className: 'map-audio__map-frame' }, [
-                el('div', { className: 'map-audio__map-overlay' }, [
-                    el('span', { className: 'map-audio__map-kicker', textContent: 'FIELD NODE' }),
-                    el('h2', { className: 'map-audio__map-title', textContent: 'Haute-Pierre / Cite Radieuse' }),
-                    el('p', {
-                        className: 'map-audio__map-caption',
-                        textContent: 'Neighborhood framing around Echichens with the stop area kept in focus.',
-                    }),
-                ]),
                 el('div', {
                     className: 'map-audio__map',
                     id: mapId,
@@ -545,16 +537,16 @@
             return;
         }
 
-        const center = [6.5596, 46.5258];
+        const center = [6.35, 46.47];
         const markerCoords = [6.5612, 46.5262];
 
         const map = new maplibregl.Map({
             container: targetId,
             style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
             center,
-            zoom: 15.4,
-            pitch: 38,
-            bearing: -18,
+            zoom: 8.15,
+            pitch: 0,
+            bearing: 0,
             attributionControl: false,
             interactive: false,
         });
