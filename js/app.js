@@ -490,6 +490,93 @@
         });
     }
 
+    // ── Pre-Footer Map + Audio ────────────────────────────────────────────
+    function renderMapAudioSection() {
+        const sectionEl = document.getElementById('map-audio');
+        const sunoSrc = 'https://suno.com/embed/2305cf95-4cb2-416c-8005-f1ef4509dfaf';
+        const mapId = 'map-audio-canvas';
+
+        const content = el('div', { className: 'map-audio-shell reveal reveal--scale' }, [
+            el('div', { className: 'map-audio__player-wrap' }, [
+                el('div', { className: 'map-audio__player-card' }, [
+                    el('div', { className: 'map-audio__eyebrow', textContent: '// LIVE_SIGNAL :: SUNO_SESSION' }),
+                    el('iframe', {
+                        className: 'map-audio__player',
+                        src: sunoSrc,
+                        width: '760',
+                        height: '240',
+                        frameborder: '0',
+                        allow: 'autoplay; encrypted-media; fullscreen',
+                        loading: 'lazy',
+                        referrerpolicy: 'no-referrer-when-downgrade',
+                        title: 'Suno player',
+                    }),
+                ]),
+            ]),
+            el('div', { className: 'map-audio__map-frame' }, [
+                el('div', { className: 'map-audio__map-overlay' }, [
+                    el('span', { className: 'map-audio__map-kicker', textContent: 'FIELD NODE' }),
+                    el('h2', { className: 'map-audio__map-title', textContent: 'Haute-Pierre / Cite Radieuse' }),
+                    el('p', {
+                        className: 'map-audio__map-caption',
+                        textContent: 'Neighborhood framing around Echichens with the stop area kept in focus.',
+                    }),
+                ]),
+                el('div', {
+                    className: 'map-audio__map',
+                    id: mapId,
+                    role: 'img',
+                    'aria-label': 'Map centered on Haute-Pierre and Cite Radieuse in Echichens',
+                }),
+            ]),
+        ]);
+
+        sectionEl.appendChild(content);
+        initPremiumMap(mapId);
+    }
+
+    function initPremiumMap(targetId) {
+        const mapRoot = document.getElementById(targetId);
+        if (!mapRoot) return;
+
+        if (typeof maplibregl === 'undefined') {
+            mapRoot.classList.add('map-audio__map--fallback');
+            mapRoot.textContent = 'Map unavailable.';
+            return;
+        }
+
+        const center = [6.5596, 46.5258];
+        const markerCoords = [6.5612, 46.5262];
+
+        const map = new maplibregl.Map({
+            container: targetId,
+            style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+            center,
+            zoom: 15.4,
+            pitch: 38,
+            bearing: -18,
+            attributionControl: false,
+            interactive: false,
+        });
+
+        map.on('load', () => {
+            mapRoot.classList.add('map-audio__map--ready');
+
+            const markerEl = document.createElement('div');
+            markerEl.className = 'map-audio__marker';
+            markerEl.innerHTML = '<span class="map-audio__marker-core"></span>';
+
+            new maplibregl.Marker({ element: markerEl, anchor: 'center' })
+                .setLngLat(markerCoords)
+                .addTo(map);
+        });
+
+        map.on('error', () => {
+            mapRoot.classList.add('map-audio__map--fallback');
+            mapRoot.textContent = 'Map style unavailable.';
+        });
+    }
+
     // ── Footer ────────────────────────────────────────────────────────────
     function renderFooter() {
         const footerEl = document.getElementById('footer');
@@ -662,6 +749,7 @@
     renderProjects();
     renderSkills();
     renderContact();
+    renderMapAudioSection();
     renderFooter();
 
     // Kick off mouse glow immediately, but delay scroll reveals through the boot sequence
